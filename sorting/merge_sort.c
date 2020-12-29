@@ -12,33 +12,35 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < N; i++) {
         scanf("%d", &nums[i]);
     }
-    merge_sort(nums, 0, N);
+    merge_sort(nums, 0, N - 1);
     assert(sort_check(nums, N));
     print_array(nums, N);
     return 0;
 }
 
 void merge_sort(int* nums, int start, int end) {
-    if (start <= end) {
+    if (start < end) {
         int mid = (start + end) / 2;
         merge_sort(nums, start, mid);
-        merge_sort(nums, mid, end);
+        merge_sort(nums, mid + 1, end);
         merge(nums, start, mid, end);
     } else return;
 }
 
 void merge(int* nums, int start, int mid, int end) {
     // merges two sub-arrays of nums
-    int temp_size = end - start;
-    int temp[temp_size];
-    int i = start, j = mid + 1, k = 0;
-    while (i < mid && j < end) {
-        if (nums[i] > nums[j])
-            temp[k++] = nums[j++];
-        else
-            temp[k++] = nums[i++];
+    int aux[end - start + 5];
+    int ptr_left = start, ptr_right = mid + 1;
+    for (int k = start; k <= end; k++) {
+        if (ptr_left == mid + 1) {
+            aux[k] = nums[ptr_right++];
+        } else if (ptr_right == end + 1) {
+            aux[k] = nums[ptr_left++];
+        } else if (nums[ptr_left] < nums[ptr_right]) {
+            aux[k] = nums[ptr_left++];
+        } else
+            aux[k] = nums[ptr_right++];
     }
-    while (i < mid) temp[k++] = temp[i++];
-    while (j < end) temp[k++] = temp[j++];
-    for (int i = start; i < end; i++) nums[i] = temp[i];
+    for (int k = start; k <= end; k++)
+        nums[k] = aux[k];
 }
