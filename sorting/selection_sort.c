@@ -3,7 +3,7 @@
 #include <assert.h>
 
 void selection_sort(int*, int);
-void swap(int*, int, int);
+void swap(int*, int*);
 int find_pos(int*, int, int);
 
 int main(int argc, char* argv[]) {
@@ -23,14 +23,14 @@ void selection_sort(int* nums, int size) {
     for (int i = 0; i < size - 1; i++) {
         // get the position of the element that should be here
         int pos = find_pos(nums, i, size);
-        swap(nums, i, pos);
+        swap(&nums[i], &nums[pos]);
     }
 }
 
-void swap(int* nums, int i, int j) {
-    int temp = nums[i];
-    nums[i] = nums[j];
-    nums[j] = temp;
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 int find_pos(int* nums, int start, int size) {
